@@ -20,8 +20,7 @@ jobs:
         echo $CONDA/bin >> $GITHUB_PATH
     - name: Install dependencies
       run: |
-        conda env update --file environment.yml --name base
-        #필요한 라이브러리들 설치하기
+        conda env update --file /path/to/environment.yml --name base
     - name: library install
       run: |
         pip install requests
