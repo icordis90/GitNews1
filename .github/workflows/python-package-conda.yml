@@ -1,0 +1,51 @@
+name: 뉴스속보수집
+
+#어떤 조건일때 파일을 실행 시킬지
+on: [push]
+
+#실제파일 실행시킬부분
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Add conda to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $CONDA/bin >> $GITHUB_PATH
+    - name: Install dependencies
+      run: |
+        conda env update --file environment.yml --name base
+        #필요한 라이브러리들 설치하기
+    - name: library install
+      run: |
+        pip install requests
+        pip install beautifulsoup
+        pip install pandas
+        pip install lxml
+    #내가만든 파이썬 파일 실행    
+    - name: run my file
+      run: |
+        python3 news.py 
+        conda install pytest
+
+    #커밋
+    - name: run my file
+      run: |
+        git config--global user.email"icordis@naver.com"
+        git config--global user.name "Seonah"
+        git add data.csv
+        git commit-m "뉴스데이터 수집"
+
+    #푸쉬
+    - name: push
+      uses: ad-m/github-push-action@master
+      with:
+        branch : "main"
+        github_token : $
+    
